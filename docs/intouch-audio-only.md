@@ -19,7 +19,30 @@ The custom XCFramework contains only the two slices Intouch needs:
 It deliberately omits Intel simulator, macOS, Mac Catalyst, tvOS, and visionOS.
 
 GitHub Actions is intentionally disabled on this fork. Nothing in this branch
-has been compiled or published. On a suitable macOS host, the manual build is:
+has been compiled or published.
+
+## Build with Codemagic
+
+The root `codemagic.yaml` defines a manual-only workflow named
+`intouch-webrtc-ios`. It uses a Codemagic M2 Mac mini, limits Ninja to four
+parallel jobs for the machine's memory, and retains only this artifact:
+
+```text
+build/_package/apple_audio_only/WebRTC.xcframework.zip
+```
+
+To run it, add this GitHub repository as a Codemagic application, select branch
+`intouch/audio-only-m144.7559.10`, choose **Start new build**, and select the
+`intouch-webrtc-ios` workflow. The YAML deliberately defines no automatic
+trigger, signing credentials, or publishing destination.
+
+The workflow has a 120-minute limit. If it completes, download
+`WebRTC.xcframework.zip` from the build's Artifacts section. The report step also
+prints its SHA-256 checksum in the build log.
+
+## Build on a Mac
+
+On a suitable macOS host, the manual build is:
 
 ```sh
 cd build

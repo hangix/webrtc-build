@@ -1,0 +1,29 @@
+workflows:
+  intouch-webrtc-ios:
+    name: Intouch audio-only WebRTC XCFramework
+    instance_type: mac_mini_m2
+    max_build_duration: 120
+    environment:
+      xcode: 26.2
+      vars:
+        WEBRTC_COMMIT: f47af7bc965851090bef9fce9a4284f468d20a44
+        WEBRTC_PARALLEL_BUILDS: "4"
+    scripts:
+      - name: Show build environment
+        script: |
+          set -euo pipefail
+          uname -a
+          xcodebuild -version
+          df -h
+      - name: Build audio-only iOS XCFramework
+        script: |
+          set -euo pipefail
+          cd build
+          ./build.apple_audio_only.sh "$WEBRTC_COMMIT" release
+      - name: Report artifact
+        script: |
+          set -euo pipefail
+          ls -lh build/_package/apple_audio_only/WebRTC.xcframework.zip
+          shasum -a 256 build/_package/apple_audio_only/WebRTC.xcframework.zip
+    artifacts:
+      - build/_package/apple_audio_only/WebRTC.xcframework.zip
