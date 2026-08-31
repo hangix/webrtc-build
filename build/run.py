@@ -178,6 +178,9 @@ PATCH_INFO = {
 
 PATCHES = {
     'apple': [],
+    'apple_audio_only': [
+        'intouch_audio_only.patch',
+    ],
     'apple_prefixed': [
         'apple_prefix.patch',
     ],
@@ -968,6 +971,7 @@ TARGETS = [
     'android_prefixed_stripped',
     'ios',
     'apple',
+    'apple_audio_only',
     'apple_prefixed'
 ]
 
@@ -980,7 +984,14 @@ def check_target(target):
         return target in ['windows_x86_64', 'windows_arm64']
     elif platform.system() == 'Darwin':
         logging.info(f'OS: {platform.system()}')
-        return target in ('macos_x86_64', 'macos_arm64', 'ios', 'apple', 'apple_prefixed')
+        return target in (
+            'macos_x86_64',
+            'macos_arm64',
+            'ios',
+            'apple',
+            'apple_audio_only',
+            'apple_prefixed',
+        )
     elif platform.system() == 'Linux':
         release = read_version_file('/etc/os-release')
         os = release['NAME']
@@ -1196,7 +1207,7 @@ def main():
                     extra_gn_args = (target_gn_args + ' ' + extra_gn_args).strip() if extra_gn_args else target_gn_args
                 build_webrtc_args['extra_gn_args'] = extra_gn_args
                 build_webrtc_android(**build_webrtc_args, nobuild_aar=args.webrtc_nobuild_android_aar)
-            elif args.target in ['apple', 'apple_prefixed']:
+            elif args.target in ['apple', 'apple_audio_only', 'apple_prefixed']:
                 pass
             else:
                 build_webrtc(**build_webrtc_args, target=args.target)

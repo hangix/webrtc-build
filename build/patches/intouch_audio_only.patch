@@ -1,0 +1,38 @@
+diff --git a/sdk/BUILD.gn b/sdk/BUILD.gn
+index be902a1..099b8e6 100644
+--- a/sdk/BUILD.gn
++++ b/sdk/BUILD.gn
+@@ -145,2 +144,0 @@ if (is_ios || is_mac) {
+-      "objc/helpers/AVCaptureSession+DevicePosition.h",
+-      "objc/helpers/AVCaptureSession+DevicePosition.mm",
+@@ -182,6 +179,0 @@ if (is_ios || is_mac) {
+-      if (target_platform != "tvos" && target_environment != "xrdevice" && target_environment != "xrsimulator") {
+-          sources += [
+-            "objc/helpers/RTCCameraPreviewView.h",
+-            "objc/helpers/RTCCameraPreviewView.m",
+-          ]
+-      }
+@@ -708,15 +700,3 @@ if (is_ios || is_mac) {
+-      sources = [
+-        "objc/components/capturer/RTCCameraVideoCapturer.h",
+-        "objc/components/capturer/RTCCameraVideoCapturer.m",
+-      ]
+-      if (is_ios && (target_environment != "xrdevice" && target_environment != "xrsimulator")) {
+-        sources += [
+-          "objc/components/capturer/RTCFileVideoCapturer.h",
+-          "objc/components/capturer/RTCFileVideoCapturer.m",
+-        ]
+-      }
+-      frameworks = [
+-        "AVFoundation.framework",
+-        "CoreVideo.framework",
+-        "QuartzCore.framework",
+-      ]
++      # Intouch is voice-only. Keep this target as a no-op so existing renderer
++      # dependencies remain valid without linking local camera capture code.
++      sources = [ "objc/helpers/noop.mm" ]
+@@ -1491,2 +1470,0 @@ if (is_ios || is_mac) {
+-          "objc/components/capturer/RTCCameraVideoCapturer.h",
+-          "objc/components/capturer/RTCFileVideoCapturer.h",
+@@ -1584 +1561,0 @@ if (is_ios || is_mac) {
+-            "objc/helpers/RTCCameraPreviewView.h",
