@@ -36,3 +36,48 @@ index be902a1..099b8e6 100644
 -          "objc/components/capturer/RTCFileVideoCapturer.h",
 @@ -1584 +1561,0 @@ if (is_ios || is_mac) {
 -            "objc/helpers/RTCCameraPreviewView.h",
+diff --git a/modules/audio_device/audio_engine_device.mm b/modules/audio_device/audio_engine_device.mm
+index ef24964..aca297e 100644
+--- a/modules/audio_device/audio_engine_device.mm
++++ b/modules/audio_device/audio_engine_device.mm
+@@ -3186,0 +3187 @@ bool AudioEngineDevice::IsMicrophonePermissionGranted() {
++#if TARGET_OS_OSX
+@@ -3188,0 +3190,7 @@ bool AudioEngineDevice::IsMicrophonePermissionGranted() {
++#else
++#pragma clang diagnostic push
++#pragma clang diagnostic ignored "-Wdeprecated-declarations"
++  AVAudioSessionRecordPermission status = [AVAudioSession sharedInstance].recordPermission;
++#pragma clang diagnostic pop
++  return status == AVAudioSessionRecordPermissionGranted;
++#endif
+@@ -3191,0 +3200 @@ bool AudioEngineDevice::EnsureMicrophonePermissionSync() {
++#if TARGET_OS_OSX
+@@ -3215,0 +3225,28 @@ bool AudioEngineDevice::EnsureMicrophonePermissionSync() {
++#else
++#pragma clang diagnostic push
++#pragma clang diagnostic ignored "-Wdeprecated-declarations"
++  AVAudioSessionRecordPermission status = [AVAudioSession sharedInstance].recordPermission;
++
++  if (status == AVAudioSessionRecordPermissionGranted) {
++    return true;
++  }
++
++  if (status == AVAudioSessionRecordPermissionUndetermined) {
++    // Request permission synchronously - this will block WebRTC's worker thread
++    // but this is acceptable since instantiating AVAudioInputNode would block anyway
++    dispatch_semaphore_t semaphore = dispatch_semaphore_create(0);
++    __block BOOL granted = NO;
++
++    [[AVAudioSession sharedInstance] requestRecordPermission:^(BOOL granted_inner) {
++      granted = granted_inner;
++      dispatch_semaphore_signal(semaphore);
++    }];
++
++    dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER);
++    return granted;
++  }
++#pragma clang diagnostic pop
++
++  // Status is denied
++  return false;
++#endif

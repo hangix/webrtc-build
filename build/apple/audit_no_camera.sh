@@ -9,6 +9,11 @@ if [[ -z "$XCFRAMEWORK_PATH" || ! -d "$XCFRAMEWORK_PATH" ]]; then
   exit 2
 fi
 
+if ! command -v strings >/dev/null 2>&1; then
+  echo "The strings utility is required for the camera API audit." >&2
+  exit 2
+fi
+
 CAMERA_PATTERN='RTCCameraVideoCapturer|RTCCameraPreviewView|AVCaptureDevice|AVCaptureSession|AVCaptureVideoDataOutput|AVCaptureVideoPreviewLayer|AVMediaTypeVideo'
 FOUND_SLICE=false
 

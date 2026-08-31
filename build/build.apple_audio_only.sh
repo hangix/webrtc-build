@@ -16,5 +16,8 @@ mkdir -p "$SCRIPT_DIR/_package/apple_audio_only"
   "$SCRIPT_DIR/_source/apple_audio_only/webrtc/src" \
   "$SCRIPT_DIR/_package/apple_audio_only"
 
-"$SCRIPT_DIR/apple/audit_no_camera.sh" \
-  "$SCRIPT_DIR/_package/apple_audio_only/WebRTC.xcframework"
+if ! "$SCRIPT_DIR/apple/audit_no_camera.sh" \
+  "$SCRIPT_DIR/_package/apple_audio_only/WebRTC.xcframework"; then
+  rm -f -- "$SCRIPT_DIR/_package/apple_audio_only/WebRTC.xcframework.zip"
+  exit 1
+fi

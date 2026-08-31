@@ -7,8 +7,10 @@ It is pinned to the WebRTC source commit recorded in `build/VERSION` for
 
 The source patch removes the Objective-C camera capturer, camera preview, and
 their public framework headers while preserving peer connections, WebRTC audio,
-audio codecs, data channels, and remote video types. The build ends with a
-binary string audit of every iOS XCFramework slice and fails if known camera
+audio codecs, data channels, and remote video types. On iOS, microphone
+authorization uses `AVAudioSession` so the binary does not reference the shared
+`AVCaptureDevice` camera API. The build ends with a binary string audit of every
+iOS XCFramework slice and fails without retaining the ZIP if known camera
 classes or APIs remain.
 
 The custom XCFramework contains only the two slices Intouch needs:
