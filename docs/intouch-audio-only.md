@@ -11,6 +11,13 @@ audio codecs, data channels, and remote video types. The build ends with a
 binary string audit of every iOS XCFramework slice and fails if known camera
 classes or APIs remain.
 
+The custom XCFramework contains only the two slices Intouch needs:
+
+- arm64 iOS devices for development, Ad Hoc, TestFlight, and App Store builds;
+- arm64 iOS Simulator for development on Apple Silicon Macs.
+
+It deliberately omits Intel simulator, macOS, Mac Catalyst, tvOS, and visionOS.
+
 GitHub Actions is intentionally disabled on this fork. Nothing in this branch
 has been compiled or published. On a suitable macOS host, the manual build is:
 

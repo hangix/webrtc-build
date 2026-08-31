@@ -11,7 +11,7 @@ python3 run.py build apple_audio_only --commit "$COMMIT" --webrtc-fetch
 
 export PATH="$SCRIPT_DIR/_source/apple_audio_only/depot_tools:$PATH"
 mkdir -p "$SCRIPT_DIR/_package/apple_audio_only"
-. "$SCRIPT_DIR/apple/xcframework.sh" \
+"$SCRIPT_DIR/apple/xcframework_ios_only.sh" \
   "$MODE" \
   "$SCRIPT_DIR/_source/apple_audio_only/webrtc/src" \
   "$SCRIPT_DIR/_package/apple_audio_only"
